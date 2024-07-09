@@ -25,4 +25,4 @@ jobs:
         run: sudo apt-get install xvfb
 
       - name: Running the Python script
-        run: python scraper1.py
+        run: python -u scraper1.py
