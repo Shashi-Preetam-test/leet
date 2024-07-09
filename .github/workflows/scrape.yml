@@ -1,0 +1,28 @@
+name: scrape1
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Installed package list
+        run: apt list --installed
+      - name: Removing previous chrome instances on runner 
+        run: sudo apt purge google-chrome-stable  
+
+      - name: Installing all necessary packages
+        run: pip install typing-extensions chromedriver-autoinstaller selenium pyvirtualdisplay beautifulsoup4 pymongo html-parser 
+      - name: Install xvfb
+        run: sudo apt-get install xvfb
+
+      - name: Running the Python script
+        run: python scraper1.py
