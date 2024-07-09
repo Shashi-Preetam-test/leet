@@ -36,7 +36,61 @@ for option in options:
 client = MongoClient("mongodb+srv://shashi:shashi123@leetcode-rankify.kno7lqv.mongodb.net/?retryWrites=true&w=majority&appName=LeetCode-Rankify")
 db = client["LeetCode-Rankify"]
 
-def getResults(contest_name):
+def getResults(contest_name, pages):
+    url = "https://leetcode.com/contest/{}/ranking/".format(contest_name)
+    page = 1
+
+    results = []
+
+    client = MongoClient("mongodb+srv://shashi:shashi123@leetcode-rankify.kno7lqv.mongodb.net/?retryWrites=true&w=majority&appName=LeetCode-Rankify")
+    db = client["LeetCode-Rankify"]
+
+    while(page <= pages):
+        driver = webdriver.Chrome(options=chrome_options)
+            
+        driver.get(url + str(page))
+
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+        if soup.find('tr') is None:
+            continue
+            
+        for row in soup.find_all('tr'):
+            if row.find(class_="ranking-username") is None:
+                continue
+
+            user = dict()
+
+            ptr = row.find('td')
+            user["rank"] = ptr.get_text().strip()
+
+            ptr = ptr.find_next('td')
+            user["name"] = ptr.find('a')["title"]
+
+            ptr = ptr.find_next('td')
+            user["score"] = ptr.get_text().strip()
+
+            ptr = ptr.find_next('td')
+            user["finish_time"] = ptr.get_text().strip()
+
+            file = open('{}.json'.format(contest_name), 'a')
+
+            file.write(str(user))   
+            file.write('\n')
+            
+            file.close()
+            results.append(user)
+        
+        driver.quit()
+
+        print("Results fetched from page {}.".format(page))
+        page += 1
+
+    print("Results fetched from pages {} to {}.".format(1, pages))
+    db[contest_name].insert_many(results)
+
+
+def startScrape(contest_name):
     url = "https://leetcode.com/contest/" + contest_name + "/ranking"
     
     driver = webdriver.Chrome(options=chrome_options)
@@ -49,7 +103,7 @@ def getResults(contest_name):
     
     pages = int(soup.find_all(class_ = "page-btn")[-1].get_text())
     
-    Popen(('python scraper-worker1.py {} {} {}'.format(contest_name, 1, pages)), shell=True)
+    getResults(contest_name, pages)
     
 
 if len(sys.argv) != 2:
@@ -69,4 +123,4 @@ else:
     contest_name = sys.argv[1]
 
 print(contest_name)
-getResults(contest_name=contest_name)
+startScrape(contest_name=contest_name)
