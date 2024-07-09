@@ -77,8 +77,6 @@ while(page <= end_page):
     
     driver.quit()
 
-    time.sleep(1)
-
     print("Results fetched from page {}.".format(page))
     page += 1
 
