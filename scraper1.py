@@ -40,7 +40,7 @@ def getResults(contest_name, pages):
     client = MongoClient("mongodb+srv://shashi:shashi123@leetcode-rankify.kno7lqv.mongodb.net/?retryWrites=true&w=majority&appName=LeetCode-Rankify")
     db = client["LeetCode-Rankify"]
 
-    while(page <= pages):
+    while(page <= 10):
         driver = webdriver.Chrome(options=chrome_options)
             
         try:
