@@ -102,6 +102,7 @@ def startScrape(contest_name):
     
     pages = int(soup.find_all(class_ = "page-btn")[-1].get_text())
     
+    print("{} pages found.".format(pages))
     getResults(contest_name, pages)
     
 
