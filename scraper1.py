@@ -74,11 +74,6 @@ def getResults(contest_name, pages):
             ptr = ptr.find_next('td')
             user["finish_time"] = ptr.get_text().strip()
 
-
-            file.write(str(user))   
-            file.write('\n')
-            
-            file.close()
             results.append(user)
         
         driver.quit()
@@ -86,8 +81,11 @@ def getResults(contest_name, pages):
         print("Results fetched from page {}.".format(page))
         page += 1
 
-    file.write(json.dumps(results, indent=4))
-    db[contest_name].insert_many(results)
+    data = json.dumps(results, indent=4)
+    file.write(data)
+    file.close()
+    
+    # db[contest_name].insert_many(results)
     print("Results fetched from pages {} to {}.".format(1, pages))
 
 
@@ -105,7 +103,7 @@ def startScrape(contest_name):
     pages = int(soup.find_all(class_ = "page-btn")[-1].get_text())
     
     print("{} pages found.".format(pages))
-    getResults(contest_name, pages)
+    getResults(contest_name, 3)
     
 
 if len(sys.argv) != 2 or sys.argv[1] == "":
