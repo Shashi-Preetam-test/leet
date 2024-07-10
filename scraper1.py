@@ -105,21 +105,24 @@ def startScrape(contest_name):
     getResults(contest_name, pages)
     
 
-if len(sys.argv) != 2 or sys.argv[1] == "":
-    url = "https://leetcode.com/contest/"
+# if len(sys.argv) != 2 or sys.argv[1] == "":
+#     url = "https://leetcode.com/contest/"
     
-    driver = webdriver.Chrome(options=chrome_options)
+#     driver = webdriver.Chrome(options=chrome_options)
     
-    driver.get(url)
+#     driver.get(url)
     
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
+#     soup = BeautifulSoup(driver.page_source, 'html.parser')
     
-    driver.quit()
+#     driver.quit()
     
-    contest_name = soup.find(class_='group flex w-full items-center')['data-contest-title-slug']
+#     contest_name = soup.find(class_='group flex w-full items-center')['data-contest-title-slug']
     
-else: 
-    contest_name = sys.argv[1]
+# else: 
+#     contest_name = sys.argv[1]
 
-print(contest_name)
-startScrape(contest_name=contest_name)
+print(sys.argv[1])
+if(len(sys.argv[1]) == ""):
+    print("Empty")
+
+# startScrape(contest_name=contest_name)
