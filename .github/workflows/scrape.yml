@@ -4,6 +4,10 @@ on:
     tags:
       - '*'
   workflow_dispatch:
+    inputs:
+      contest-name:
+        description: 'Enter contest name (leave blank to fetch latest contest)'
+        default: ''
 jobs:
   scrape:
     runs-on: ubuntu-latest
@@ -25,4 +29,4 @@ jobs:
         run: sudo apt-get install xvfb
 
       - name: Running the Python script
-        run: python -u scraper1.py
+        run: python { github.event.inputs.contest-name } scraper1.py
