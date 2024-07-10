@@ -1,4 +1,4 @@
-import sys
+import sys, json
 from selenium import webdriver
 import chromedriver_autoinstaller
 from pyvirtualdisplay import Display
@@ -40,7 +40,9 @@ def getResults(contest_name, pages):
     client = MongoClient("mongodb+srv://shashi:shashi123@leetcode-rankify.kno7lqv.mongodb.net/?retryWrites=true&w=majority&appName=LeetCode-Rankify")
     db = client["LeetCode-Rankify"]
 
-    while(page <= 10):
+    file = open('{}.json'.format(contest_name), 'w')
+            
+    while(page <= pages):
         driver = webdriver.Chrome(options=chrome_options)
             
         try:
@@ -72,7 +74,11 @@ def getResults(contest_name, pages):
             ptr = ptr.find_next('td')
             user["finish_time"] = ptr.get_text().strip()
 
-            print(user)
+
+            file.write(str(user))   
+            file.write('\n')
+            
+            file.close()
             results.append(user)
         
         driver.quit()
@@ -80,8 +86,9 @@ def getResults(contest_name, pages):
         print("Results fetched from page {}.".format(page))
         page += 1
 
-    print("Results fetched from pages {} to {}.".format(1, pages))
+    file.write(json.dumps(results, indent=4))
     db[contest_name].insert_many(results)
+    print("Results fetched from pages {} to {}.".format(1, pages))
 
 
 def startScrape(contest_name):
