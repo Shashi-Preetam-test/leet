@@ -1,11 +1,8 @@
 import sys
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 import chromedriver_autoinstaller
 from pyvirtualdisplay import Display
 from bs4 import BeautifulSoup
-from subprocess import Popen
 from pymongo import MongoClient
 
 display = Display(visible=0, size=(800, 800))  
@@ -17,13 +14,11 @@ chrome_options = webdriver.ChromeOptions()
 
 options = [
   # Define window size here
-   "--window-size=1200,1200",
+   "--window-size=800,800",
     "--ignore-certificate-errors"
- 
-    #"--headless",
+    "--headless",
+    
     #"--disable-gpu",
-    #"--window-size=1920,1200",
-    #"--ignore-certificate-errors",
     #"--disable-extensions",
     #"--no-sandbox",
     #"--disable-dev-shm-usage",
@@ -48,7 +43,11 @@ def getResults(contest_name, pages):
     while(page <= pages):
         driver = webdriver.Chrome(options=chrome_options)
             
-        driver.get(url + str(page))
+        try:
+            driver.get(url + str(page))
+        except Exception as e:
+            print("Couldn't fetch page {}.".format(page), e)
+            continue
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
@@ -106,7 +105,7 @@ def startScrape(contest_name):
     getResults(contest_name, pages)
     
 
-if len(sys.argv) != 2:
+if len(sys.argv) != 2 or sys.argv[1] == "":
     url = "https://leetcode.com/contest/"
     
     driver = webdriver.Chrome(options=chrome_options)
