@@ -121,4 +121,5 @@ if len(sys.argv) != 2 or sys.argv[1] == "":
 else: 
     contest_name = sys.argv[1]
 
+print(contest_name)
 startScrape(contest_name=contest_name)
