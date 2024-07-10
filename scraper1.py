@@ -72,12 +72,7 @@ def getResults(contest_name, pages):
             ptr = ptr.find_next('td')
             user["finish_time"] = ptr.get_text().strip()
 
-            file = open('{}.json'.format(contest_name), 'a')
-
-            file.write(str(user))   
-            file.write('\n')
-            
-            file.close()
+            print(user)
             results.append(user)
         
         driver.quit()
