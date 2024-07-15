@@ -39,8 +39,6 @@ def getResults(contest_name, pages):
 
     client = MongoClient("mongodb+srv://shashi:shashi123@leetcode-rankify.kno7lqv.mongodb.net/?retryWrites=true&w=majority&appName=LeetCode-Rankify")
     db = client["LeetCode-Rankify"]
-
-    file = open('./contest-results/{}.json'.format(contest_name), 'w')
             
     while(page <= pages):
         driver = webdriver.Chrome(options=chrome_options)
@@ -80,12 +78,8 @@ def getResults(contest_name, pages):
 
         print("Results fetched from page {}.".format(page))
         page += 1
-
-    data = json.dumps(results, indent=4)
-    file.write(data)
-    file.close()
     
-    # db[contest_name].insert_many(results)
+    db[contest_name].insert_many(results)
     print("Results fetched from pages {} to {}.".format(1, 3))
 
 
@@ -100,10 +94,10 @@ def startScrape(contest_name):
     
     driver.quit()
     
-    temp = open('err.html', 'w')
-    temp.write(str(soup))
-    temp.close()
-    print(soup)
+    pages = int(soup.find_all(class_ = "page-btn")[-1].get_text())
+
+    print("{} pages found.".format(pages))
+    getResults(contest_name, 3)
 
 if len(sys.argv) != 2 or sys.argv[1] == "":
     url = "https://leetcode.com/contest/"
