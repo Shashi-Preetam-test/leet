@@ -11,6 +11,10 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+    
     steps:
       - name: Check out this repo
         uses: actions/checkout@v3
@@ -30,3 +34,11 @@ jobs:
 
       - name: Running the Python script
         run: python -u scraper1.py ${{ github.event.inputs.contest-name }}
+
+      - name: GIT commit and push changes
+        run: |
+          git config --global user.name 
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message:  Updated contest-results
