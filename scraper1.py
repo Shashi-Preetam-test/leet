@@ -85,7 +85,7 @@ def getResults(contest_name, pages):
     file.write(data)
     file.close()
     
-    # db[contest_name].insert_many(results)
+    db[contest_name].insert_many(results)
     print("Results fetched from pages {} to {}.".format(1, pages))
 
 
@@ -103,7 +103,7 @@ def startScrape(contest_name):
     pages = int(soup.find_all(class_ = "page-btn")[-1].get_text())
     
     print("{} pages found.".format(pages))
-    getResults(contest_name, pages)
+    getResults(contest_name, 3)
     
 
 if len(sys.argv) != 2 or sys.argv[1] == "":
