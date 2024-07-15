@@ -85,8 +85,8 @@ def getResults(contest_name, pages):
     file.write(data)
     file.close()
     
-    db[contest_name].insert_many(results)
-    print("Results fetched from pages {} to {}.".format(1, pages))
+    # db[contest_name].insert_many(results)
+    print("Results fetched from pages {} to {}.".format(1, 3))
 
 
 def startScrape(contest_name):
