@@ -101,7 +101,7 @@ def startScrape(contest_name):
     driver.quit()
     
     temp = open('err.html', 'w')
-    temp.write(soup.prettify("utf-8"))
+    temp.write(unicode(soup))
     temp.close()
     print(soup)
 
