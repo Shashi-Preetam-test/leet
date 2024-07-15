@@ -101,7 +101,7 @@ def startScrape(contest_name):
     driver.quit()
     
     temp = open('err.html', 'w')
-    temp.write(unicode(soup))
+    temp.write(str(soup))
     temp.close()
     print(soup)
 
