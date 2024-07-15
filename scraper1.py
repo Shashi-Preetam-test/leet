@@ -100,6 +100,9 @@ def startScrape(contest_name):
     
     driver.quit()
     
+    temp = open('err.html', 'w')
+    temp.write(soup)
+    temp.close()
     print(soup)
 
 if len(sys.argv) != 2 or sys.argv[1] == "":
