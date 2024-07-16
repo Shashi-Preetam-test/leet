@@ -82,7 +82,7 @@ def getResults(contest_name, pages):
         page += 1
     
     db[contest_name].insert_many(results)
-    print("Results fetched from pages {} to {}.".format(1, 3))
+    print("Results fetched from pages {} to {}.".format(1, pages))
 
 
 def startScrape(contest_name):
