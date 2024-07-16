@@ -87,28 +87,30 @@ def getResults(contest_name, pages):
 
 def startScrape(contest_name):
     url = "https://leetcode.com/contest/" + contest_name + "/ranking"
-    
-    driver = webdriver.Chrome(options=chrome_options)
-    
-    try:
-        driver.get(url)
-    except Exception as e:
-        print("Couldn't fetch number of pages.", e, "\nRetrying.")
-        driver.quit()
-        startScrape(contest_name)
-    
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    
-    driver.quit()
 
-    if(len(soup.find_all(class_ = "page-btn")) == 0):
-        print("Couldn't fetch number of pages. Retrying.")
-        startScrape(contest_name)
+    while(True):
+      driver = webdriver.Chrome(options=chrome_options)
       
-    pages = int(soup.find_all(class_ = "page-btn")[-1].get_text())
-
-    print("{} pages found.".format(pages))
-    getResults(contest_name, pages)
+      try:
+          driver.get(url)
+      except Exception as e:
+          print("Couldn't fetch number of pages.", e, "\nRetrying.")
+          driver.quit()
+          continue
+      
+      soup = BeautifulSoup(driver.page_source, 'html.parser')
+      
+      driver.quit()
+  
+      if(len(soup.find_all(class_ = "page-btn")) == 0):
+          print("Couldn't fetch number of pages. Retrying.")
+          continue
+        
+      pages = int(soup.find_all(class_ = "page-btn")[-1].get_text())
+  
+      print("{} pages found.".format(pages))
+      getResults(contest_name, pages)
+      break
 
 if len(sys.argv) != 2 or sys.argv[1] == "":
     url = "https://leetcode.com/contest/"
