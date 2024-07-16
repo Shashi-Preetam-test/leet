@@ -90,12 +90,21 @@ def startScrape(contest_name):
     
     driver = webdriver.Chrome(options=chrome_options)
     
-    driver.get(url)
+    try:
+        driver.get(url + str(page))
+    except Exception as e:
+        print("Couldn't fetch number of pages.", e, "\nRetrying.")
+        driver.quit()
+        startScrape(contest_name)
     
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     
     driver.quit()
-    
+
+    if(len(soup.find_all(class_ = "page-btn")) == 0):
+        print("Couldn't fetch number of pages. Retrying.")
+        startScrape(contest_name)
+      
     pages = int(soup.find_all(class_ = "page-btn")[-1].get_text())
 
     print("{} pages found.".format(pages))
