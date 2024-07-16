@@ -44,7 +44,7 @@ def getResults(contest_name, pages):
         driver = webdriver.Chrome(options=chrome_options)
             
         try:
-            driver.get(url + str(page))
+            driver.get(url)
         except Exception as e:
             print("Couldn't fetch page {}.".format(page), e, "\nRetrying.")
             driver.quit()
