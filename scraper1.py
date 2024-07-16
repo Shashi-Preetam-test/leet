@@ -46,14 +46,16 @@ def getResults(contest_name, pages):
         try:
             driver.get(url + str(page))
         except Exception as e:
-            print("Couldn't fetch page {}.".format(page), e)
+            print("Couldn't fetch page {}.".format(page), e, "\nRetrying.")
+            driver.quit()
             continue
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
         if soup.find('tr') is None:
+            driver.quit()
             continue
-            
+      
         for row in soup.find_all('tr'):
             if row.find(class_="ranking-username") is None:
                 continue
@@ -71,7 +73,7 @@ def getResults(contest_name, pages):
 
             ptr = ptr.find_next('td')
             user["finish_time"] = ptr.get_text().strip()
-
+          
             results.append(user)
         
         driver.quit()
