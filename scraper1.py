@@ -63,13 +63,13 @@ def getResults(contest_name, pages):
             user = dict()
 
             ptr = row.find('td')
-            user["rank"] = ptr.get_text().strip()
+            user["rank"] = int(ptr.get_text().strip())
 
             ptr = ptr.find_next('td')
             user["name"] = ptr.find('a')["title"]
 
             ptr = ptr.find_next('td')
-            user["score"] = ptr.get_text().strip()
+            user["score"] = int(ptr.get_text().strip())
 
             ptr = ptr.find_next('td')
             user["finish_time"] = ptr.get_text().strip()
