@@ -53,7 +53,12 @@ def getResults(contest_name, pages):
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
         if soup.find('tr') is None:
+            print("Couldn't fetch page {}.".format(page), "\nRetrying.")
             driver.quit()
+            continue
+
+        if(len(soup.find_all('tr')) <= 1):
+            print("Couldn't fetch page {}.".format(page), "\nRetrying.")
             continue
       
         for row in soup.find_all('tr'):
