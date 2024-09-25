@@ -32,4 +32,7 @@ jobs:
         run: sudo apt-get install xvfb
 
       - name: Running the Python script
+        env:
+          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
         run: python -u scraper1.py ${{ github.event.inputs.contest-name }}
